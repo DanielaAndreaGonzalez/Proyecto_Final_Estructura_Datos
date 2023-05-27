@@ -1,48 +1,31 @@
 package co.edu.uniquindio.storify.models;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import co.edu.uniquindio.storify.dto.TableMusicaDto;
 import co.edu.uniquindio.storify.exceptions.RegistroException;
 import co.edu.uniquindio.storify.persistence.ArchivoUtil;
-import co.edu.uniquindio.storify.persistence.Persistencia;
 
 
 public class Tienda implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
-	
-	ArrayList<Persona> listaUsers = new ArrayList<>();
-	ArrayList<Autor> listaAutores = new ArrayList<>();
-	ArrayList<Cancion> listaCanciones = new ArrayList<>();
-	
-	
+	private static final long serialVersionUID = 1L;	
+	ArrayList<Map<String, Persona>> listaUsers = new ArrayList<>();
+	ArrayList<Autor> listaAutores = new ArrayList<>();	
 
-	
-	
-	/**
-	 * @return the listaCanciones
-	 */
-	public ArrayList<Cancion> getListaCanciones() {
-		return listaCanciones;
-	}
-
-	/**
-	 * @param listaCanciones the listaCanciones to set
-	 */
-	public void setListaCanciones(ArrayList<Cancion> listaCanciones) {
-		this.listaCanciones = listaCanciones;
-	}
-
-	public ArrayList<Persona> getListaUsers() {
+	public ArrayList<Map<String, Persona>> getListaUsers() {
 		return listaUsers;
 	}
 
-	public void setListaUsers(ArrayList<Persona> listaUsers) {
+	public void setListaUsers(ArrayList<Map<String, Persona>> listaUsers) {
 		this.listaUsers = listaUsers;
 	}
 
@@ -63,6 +46,7 @@ public class Tienda implements Serializable{
 	public Persona registerPerson(String cedula,String nombre,String edad,String usuario,String contrasenia)throws RegistroException,IOException
 	{
 		Persona userNuevo = null;
+		Map<String, Persona> mapUser = new HashMap<String, Persona>();
 		//boolean userExist = verifyPersonExists(cedula);
 		boolean userExist = false;
 		String mensaje = "";
@@ -78,7 +62,11 @@ public class Tienda implements Serializable{
 			userNuevo.setUsuario(usuario);
 			userNuevo.setEdad(edad);
 			userNuevo.setContrasenia(contrasenia);
-			getListaUsers().add(userNuevo);
+			userNuevo.setListaCancionesFavoritas(new ListaCircularSimple());
+			
+			//getListaUsers().add(userNuevo);
+			mapUser.put(userNuevo.getUsuario(), userNuevo);
+			getListaUsers().add(mapUser);
 			
 			mensaje = "Se guardó el usuario con cédula "+userNuevo.getCedula()+
 					  "nombre: "+userNuevo.getNombre()+",edad: "+userNuevo.getEdad()+
@@ -124,7 +112,8 @@ public class Tienda implements Serializable{
 		
 		Cancion cancionNueva = new Cancion();
 		
-		
+		//cancionNueva.setCodigo(codigo);
+		cancionNueva.setCodigo(generarCodigoAleatorioUnico());
 		cancionNueva.setNombre(nombreCancion);
 		cancionNueva.setNombreAlbum(nombreAlbum);
 		cancionNueva.setCaratula(caratula);
@@ -151,6 +140,19 @@ public class Tienda implements Serializable{
 	
 	
 	
+	private int generarCodigoAleatorioUnico() {
+		int numero ;
+		List<Integer> cancionList = new ArrayList<Integer>();		
+		for(int i = 0; i <getListaAutores().size(); i++)
+		{					
+			for (Cancion cancion : getListaAutores().get(i).getListaCanciones().getListaCancion()) {
+				cancionList.add(cancion.getCodigo());
+			}
+		}
+		numero = Collections.max(cancionList) + 1;
+		return numero;
+	}
+
 	public boolean verifyPersonExists(String cedula) {
 		if(ArchivoUtil.searchPerson(cedula)) 
 			return true;
@@ -218,5 +220,69 @@ public class Tienda implements Serializable{
 
 		return generoMayor;
 	}
-	
+
+	public List<TableMusicaDto> buscarCancionUsuario(String busqueda) {
+		List<TableMusicaDto> listaDeCancionesCoincidencia = new ArrayList<>();
+		
+		for (int i =0; i<getListaAutores().size(); i++) {
+			for (Cancion cancionObj : getListaAutores().get(i).getListaCanciones().getListaCancion()) {
+				if(cancionObj.getNombre().contains(busqueda)) {
+					TableMusicaDto tableMusicaDto = new TableMusicaDto();
+					tableMusicaDto.setCodigoCancion("" + cancionObj.getCodigo());
+					tableMusicaDto.setNombreCancion(cancionObj.getNombre());
+					tableMusicaDto.setNombreArtista(getListaAutores().get(i).getNombreAutor());
+					listaDeCancionesCoincidencia.add(tableMusicaDto);
+				}
+			}
+		}
+		return listaDeCancionesCoincidencia;
+	}
+
+	public TableMusicaDto agregarCacionFavoritos(TableMusicaDto newSelectionCancion,Usuario usuarioLogueado) {
+		//buscar cancion por codigo y nombre 
+		Cancion cancionEncontrada = buscarCancionPorCodigoNombre(Integer.parseInt(newSelectionCancion.getCodigoCancion()), newSelectionCancion.getNombreCancion());
+		//obtener ese objeto cancion 
+		ArrayList<Map<String, Persona>> usuarios =  getListaUsers();
+		Map<String,Persona> usuarioAux = null;		
+		for (int indiceUsuario = 0; indiceUsuario < usuarios.size(); indiceUsuario++) 
+		{
+			usuarioAux = usuarios.get(indiceUsuario);					
+			if (usuarioAux != null &&  usuarioAux.get(usuarioLogueado.getUsuario()) != null) {
+				//se agrega la cancion a la lista circular del usuario logueado como cancion favorita
+				getListaUsers().get(indiceUsuario).get(usuarioLogueado.getUsuario()).getListaCancionesFavoritas().agregarAlinicio(cancionEncontrada);
+			}
+			usuarioAux = null;
+		}		
+		return newSelectionCancion;
+	}
+
+	public void reproducirCancion(TableMusicaDto newSelection) {
+		
+		//buscar Cancion por codigo y nombre
+		Cancion cancionEncontrada = buscarCancionPorCodigoNombre(Integer.parseInt(newSelection.getCodigoCancion()), newSelection.getNombreCancion());
+		try {
+			if (cancionEncontrada != null) {
+				Desktop.getDesktop().browse(new URI(cancionEncontrada.getUrl()));				
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private Cancion buscarCancionPorCodigoNombre(int codigoCancion, String nombreCancion) {
+		Cancion cancionEncontrada =  null;
+		for (int i =0; i<getListaAutores().size(); i++) {
+			for (Cancion cancionObj : getListaAutores().get(i).getListaCanciones().getListaCancion()) {
+				if(cancionObj.getCodigo() == codigoCancion && cancionObj.getNombre().equals(nombreCancion)) {					
+					cancionEncontrada = cancionObj;
+				}
+			}
+		}
+		return cancionEncontrada;
+	}	
+		
 }

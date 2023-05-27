@@ -4,13 +4,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="co.edu.uniquindio.storify.controllers.HomeUserController">
+<AnchorPane prefHeight="670.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.storify.controllers.HomeUserController">
    <children>
       <TabPane fx:id="tblListaSolicitudAnuncios" prefHeight="730.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="250.0">
          <tabs>
@@ -31,21 +32,52 @@
                                     <Font name="Arial Bold" size="20.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="tablaListaMusica" layoutX="158.0" layoutY="201.0" prefHeight="200.0" prefWidth="665.0">
+                                <columns>
+                                    <TableColumn fx:id="codigoCancion" prefWidth="75.0" text="Codigo" />
+                                  <TableColumn fx:id="columnaArtista" prefWidth="332.0" text="Artista" />
+                                  <TableColumn fx:id="columnaCancion" maxWidth="532.0" prefWidth="331.0" text="Cancion" />
+                                </columns>
+                              </TableView>
+                              <Line endX="85.0" layoutX="777.0" layoutY="427.0" startX="-730.0" />
                            </children>
                         </AnchorPane>
-                        <Label layoutX="73.0" layoutY="105.0" text="Información de Artista">
+                        <Label layoutX="73.0" layoutY="105.0" text="Búsqueda de canciones">
                            <font>
                               <Font name="Arial Bold" size="16.0" />
                            </font>
                         </Label>
                         <Line endX="428.4000244140625" endY="-7.62939453125E-6" layoutX="432.0" layoutY="115.0" startX="-175.20001220703125" startY="-7.62939453125E-6" />
-                        <Line endX="383.9000244140625" endY="-196.5" layoutX="477.0" layoutY="312.0" startX="383.9000244140625" startY="27.600006103515625" />
-                        <Line endX="100.0" layoutX="760.0" layoutY="340.0" startX="-714.0" />
-                        <Line endX="-101.5" endY="-207.60000610351562" layoutX="147.0" layoutY="324.0" startX="-101.5" startY="15.5" />
+                        <Line endX="383.9000244140625" endY="-196.5" layoutX="477.0" layoutY="312.0" startX="383.9000244140625" startY="113.5" />
+                        <Line endX="-101.5" endY="-207.60000610351562" layoutX="147.0" layoutY="324.0" startX="-101.5" startY="101.0" />
                         <Line endX="-77.0" endY="1.8999862670898438" layoutX="147.0" layoutY="114.0" startX="-101.0" startY="1.8999862670898438" />
                      </children>
                   </AnchorPane>
                </content>
+            </Tab>
+            <Tab text="Mis favoritas">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="240.0" layoutY="78.0" text="Mis canciones favoritas">
+                           <font>
+                              <Font name="Arial Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Line endX="511.4000244140625" endY="-4.5" layoutX="364.0" layoutY="421.0" startX="-175.20001220703125" startY="-7.62939453125E-6" />
+                        <Line endX="383.9000244140625" endY="-207.5" layoutX="492.0" layoutY="295.0" startX="383.9000244140625" startY="121.0" />
+                        <Line endX="-101.70709228515625" endY="-230.3928985595703" layoutX="290.0" layoutY="319.0" startX="-101.70709228515625" startY="102.0" />
+                        <Line endX="-77.0" endY="1.8999862670898438" layoutX="316.0" layoutY="86.0" startX="-127.0" startY="1.899993896484375" />
+                        <Line endX="595.0" endY="10.0" layoutX="283.0" layoutY="78.0" startX="138.0" startY="10.0" />
+                        <TableView fx:id="tablaListaMusicaFavorita" layoutX="203.0" layoutY="142.0" prefHeight="200.0" prefWidth="665.0">
+                           <columns>
+                              <TableColumn fx:id="columnaArtistaFavorito" prefWidth="326.0" text="Artista" />
+                              <TableColumn fx:id="columnaCancionFavorita" prefWidth="337.0" text="Cancion" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
             </Tab>
          </tabs>
       </TabPane>

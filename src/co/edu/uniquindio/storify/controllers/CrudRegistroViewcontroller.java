@@ -3,6 +3,9 @@
  */
 package co.edu.uniquindio.storify.controllers;
 
+import java.util.List;
+
+import co.edu.uniquindio.storify.dto.TableMusicaDto;
 import co.edu.uniquindio.storify.models.Autor;
 import co.edu.uniquindio.storify.models.Cancion;
 import co.edu.uniquindio.storify.models.Persona;
@@ -58,6 +61,18 @@ public class CrudRegistroViewcontroller {
 
 	public String consultarGeneroMasCanciones() {
 		return this.modelFactoryController.consultarGeneroMasCanciones();
+	}
+
+	public List<TableMusicaDto> buscarCancionUsuario(String busqueda) {
+		return this.modelFactoryController.buscarCancionUsuario(busqueda);
+	}
+
+	public TableMusicaDto agregarCacionFavoritos(TableMusicaDto newSelectionCancion,Usuario usuarioLogueado) {
+		return this.modelFactoryController.agregarCacionFavoritos(newSelectionCancion,usuarioLogueado);
+	}
+
+	public void reproducirCancion(TableMusicaDto newSelection) {
+		this.modelFactoryController.reproducirCancion(newSelection);
 	}
 	
 	

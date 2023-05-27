@@ -6,6 +6,7 @@ module co.edu.uniquindio.storify {
 	
 	opens co.edu.uniquindio.storify to javafx.graphics, javafx.fxml;
 	opens co.edu.uniquindio.storify.controllers;
-	opens co.edu.uniquindio.storify.models;	
+	opens co.edu.uniquindio.storify.models;
+	opens co.edu.uniquindio.storify.dto;	
 
 }

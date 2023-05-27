@@ -2,7 +2,10 @@ package co.edu.uniquindio.storify.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import co.edu.uniquindio.storify.dto.TableMusicaDto;
 import co.edu.uniquindio.storify.exceptions.RegistroException;
 import co.edu.uniquindio.storify.models.Autor;
 import co.edu.uniquindio.storify.models.Cancion;
@@ -105,17 +108,21 @@ public class ModelFactoryController {
 	}
 
 	public Usuario login(String usuarioIngresado, String contraseñaIngresada) {
-		ArrayList<Persona> usuarios =  tienda.getListaUsers();
-		Usuario usuarioAux = null;
+		ArrayList<Map<String, Persona>> usuarios =  tienda.getListaUsers();
+		Map<String,Persona> usuarioAux = null;
+		Usuario usuarioEncontrado = null;
 		for (int indiceUsuario = 0; indiceUsuario < usuarios.size(); indiceUsuario++) 
 		{
-			usuarioAux = usuarios.get(indiceUsuario);
-			if(usuarioAux.getUsuario().equalsIgnoreCase(usuarioIngresado) && usuarioAux.getContrasenia().equalsIgnoreCase(contraseñaIngresada)) {
-				return usuarioAux;
+			usuarioAux = usuarios.get(indiceUsuario);					
+			if (usuarioAux != null &&  usuarioAux.get(usuarioIngresado) != null
+					&& usuarioAux.get(usuarioIngresado).getUsuario().equalsIgnoreCase(usuarioIngresado)
+					&& usuarioAux.get(usuarioIngresado).getContrasenia().equalsIgnoreCase(contraseñaIngresada)) {
+				usuarioEncontrado = usuarioAux.get(usuarioIngresado);
+				return usuarioEncontrado;
 			}
 			usuarioAux = null;
 		}
-		return usuarioAux;
+		return usuarioEncontrado;
 	}
 
 	public String consultarArtistaPopular() {
@@ -125,5 +132,19 @@ public class ModelFactoryController {
 
 	public String consultarGeneroMasCanciones() {		
 		return getTienda().consultarGeneroMasCanciones();
+	}
+
+	public List<TableMusicaDto> buscarCancionUsuario(String busqueda) {
+		return getTienda().buscarCancionUsuario( busqueda);
+	}
+
+	public TableMusicaDto agregarCacionFavoritos(TableMusicaDto newSelectionCancion,Usuario usuarioLogueado) {
+		TableMusicaDto registrado = getTienda().agregarCacionFavoritos(newSelectionCancion,usuarioLogueado);
+		guardarResourceXML();
+		return registrado;
+	}
+
+	public void reproducirCancion(TableMusicaDto newSelection) {
+		getTienda().reproducirCancion(newSelection);
 	}
 }
