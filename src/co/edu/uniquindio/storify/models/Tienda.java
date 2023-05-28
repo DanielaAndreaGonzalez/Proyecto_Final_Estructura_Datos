@@ -20,6 +20,21 @@ public class Tienda implements Serializable{
 	private static final long serialVersionUID = 1L;	
 	ArrayList<Map<String, Persona>> listaUsers = new ArrayList<>();
 	ArrayList<Autor> listaAutores = new ArrayList<>();	
+	ArrayList<Map<String, Integer>> listaAutorFavorito = new ArrayList<>();
+	
+	/**
+	 * @return the listaAutorFavorito
+	 */
+	public ArrayList<Map<String, Integer>> getListaAutorFavorito() {
+		return listaAutorFavorito;
+	}
+
+	/**
+	 * @param listaAutorFavorito the listaAutorFavorito to set
+	 */
+	public void setListaAutorFavorito(ArrayList<Map<String, Integer>> listaAutorFavorito) {
+		this.listaAutorFavorito = listaAutorFavorito;
+	}
 
 	public ArrayList<Map<String, Persona>> getListaUsers() {
 		return listaUsers;
@@ -217,9 +232,30 @@ public class Tienda implements Serializable{
 				}
 			}
 		}
-
 		return generoMayor;
 	}
+	
+	public String consultarArtistaPopular() {
+		//se debe de consultar en la lista de las canciones favoritas del cliente y hacer una suma por cada artista
+		int mayorEntero=0;
+		String nombreArtista = "";
+		for(Map<String,Integer> favoritas: listaAutorFavorito)
+		{
+			for(int mayor: favoritas.values())
+			{
+				if(mayor>mayorEntero)
+				{
+					mayorEntero = mayor;
+					nombreArtista = favoritas.keySet().toString();
+				}
+			}
+		}
+		return nombreArtista;
+	}
+	
+	
+	
+	
 
 	public List<TableMusicaDto> buscarCancionUsuario(String busqueda) {
 		List<TableMusicaDto> listaDeCancionesCoincidencia = new ArrayList<>();
@@ -253,9 +289,54 @@ public class Tienda implements Serializable{
 			}
 			usuarioAux = null;
 		}		
+		agregarAutorFavorito(newSelectionCancion.getNombreArtista());
 		return newSelectionCancion;
 	}
 
+	public void agregarAutorFavorito(String nombreAutor)
+	{
+		if(verificarExisteArtistaFavorito(nombreAutor))
+		{
+			int posicion= obtenerPosicionArtistaFavorito(nombreAutor);
+			int valor=0;
+			valor = listaAutorFavorito.get(posicion).get(nombreAutor) + 1;	
+			listaAutorFavorito.get(posicion).put(nombreAutor, valor);
+		}
+		else
+		{
+			Map<String,Integer> autorFavorito = new HashMap<>();
+			autorFavorito.put(nombreAutor, 1);
+			listaAutorFavorito.add(autorFavorito);
+		}
+		
+	}
+	
+	public int obtenerPosicionArtistaFavorito(String nombreAutor)
+	{
+		int posicion =0;
+		for(Map<String, Integer> autorFavorito:listaAutorFavorito)
+		{
+			if(autorFavorito.get(nombreAutor)!=null)
+			{
+				break;
+			}
+			posicion+=1;
+		}
+		return posicion;
+	}
+	public boolean verificarExisteArtistaFavorito(String nombreAutor)
+	{
+		
+		for(Map<String, Integer> autorFavorito:listaAutorFavorito)
+		{
+			if(autorFavorito.get(nombreAutor)!=null)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void reproducirCancion(TableMusicaDto newSelection) {
 		
 		//buscar Cancion por codigo y nombre
@@ -283,6 +364,8 @@ public class Tienda implements Serializable{
 			}
 		}
 		return cancionEncontrada;
-	}	
+	}
+
+		
 		
 }

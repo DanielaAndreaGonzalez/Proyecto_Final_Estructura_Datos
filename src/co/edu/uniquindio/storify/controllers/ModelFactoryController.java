@@ -127,7 +127,7 @@ public class ModelFactoryController {
 
 	public String consultarArtistaPopular() {
 		//se debe de consultar en la lista de las canciones favoritas del cliente y hacer una suma por cada artista
-		return "N/N";
+		return getTienda().consultarArtistaPopular();
 	}
 
 	public String consultarGeneroMasCanciones() {		

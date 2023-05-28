@@ -71,8 +71,8 @@
                         <Line endX="595.0" endY="10.0" layoutX="283.0" layoutY="78.0" startX="138.0" startY="10.0" />
                         <TableView fx:id="tablaListaMusicaFavorita" layoutX="203.0" layoutY="142.0" prefHeight="200.0" prefWidth="665.0">
                            <columns>
-                              <TableColumn fx:id="columnaArtistaFavorito" prefWidth="326.0" text="Artista" />
-                              <TableColumn fx:id="columnaCancionFavorita" prefWidth="337.0" text="Cancion" />
+                              <TableColumn fx:id="columnaArtistaFavorito" prefWidth="69.0" text="Codigo" />
+                              <TableColumn fx:id="columnaCancionFavorita" prefWidth="594.0" text="Cancion" />
                            </columns>
                         </TableView>
                      </children>

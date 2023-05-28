@@ -136,7 +136,6 @@ public class HomeUserController {
 					TableMusicaDto tableMusicaDto = new TableMusicaDto();
 					tableMusicaDto.setCodigoCancion("" + cancionesFavoritasUsuario.get(i).getCodigo());
 					tableMusicaDto.setNombreCancion (cancionesFavoritasUsuario.get(i).getNombre());
-					//tableMusicaDto.setNombreArtista(cancionesFavoritasUsuario.get(i).getCodigo());
 					listacancionesFavoritasEncontradas.add(tableMusicaDto);
 				}
 				
