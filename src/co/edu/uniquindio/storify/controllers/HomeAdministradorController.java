@@ -231,7 +231,9 @@ public class HomeAdministradorController {
 		}	
 	}
 		
-		
+	
+	
+	
 	
 	
 	

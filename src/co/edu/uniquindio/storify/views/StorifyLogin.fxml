@@ -11,10 +11,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="co.edu.uniquindio.storify.controllers.StorifyLoginController">
+<AnchorPane prefHeight="620.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.storify.controllers.StorifyLoginController">
    <children>
-      <TabPane fx:id="tblListaSolicitudAnuncios" prefHeight="730.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="250.0">
+      <TabPane fx:id="tblListaSolicitudAnuncios" prefHeight="693.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="250.0">
          <tabs>
             <Tab text="Autenticacion">
                <content>

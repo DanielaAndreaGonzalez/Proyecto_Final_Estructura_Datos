@@ -5,6 +5,7 @@ import java.io.IOException;
 import co.edu.uniquindio.storify.controllers.HomeAdministradorController;
 import co.edu.uniquindio.storify.controllers.HomeUserController;
 import co.edu.uniquindio.storify.controllers.StorifyLoginController;
+import co.edu.uniquindio.storify.models.Tienda;
 import co.edu.uniquindio.storify.models.Usuario;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	private Stage primaryStage;
+	Tienda tienda = new Tienda();
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -35,7 +37,7 @@ public class Main extends Application {
 			AnchorPane root = (AnchorPane) loader.load();
 			StorifyLoginController storifyController = loader.getController();
 			storifyController.setAplicacion(this);
-			Scene scene = new Scene(root,880,500);
+			Scene scene = new Scene(root,950,700);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -53,7 +55,7 @@ public class Main extends Application {
 			HomeAdministradorController homeAdministradorController = loader.getController();
 			
 			homeAdministradorController.setAplicacion(this,usuariosLogueado);
-			Scene scene = new Scene(rootLayout, 900,650);
+			Scene scene = new Scene(rootLayout, 950,700);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		}catch (IOException e) {
@@ -72,8 +74,9 @@ public class Main extends Application {
 			HomeUserController homeUserController = loader.getController();
 			
 			homeUserController.setAplicacion(this,usuariosLogueado);
-			Scene scene = new Scene(rootLayout, 900,650);
+			Scene scene = new Scene(rootLayout, 950,700);
 			primaryStage.setScene(scene);
+			
 			primaryStage.show();
 		}catch (IOException e) {
 			// TODO: handle exception

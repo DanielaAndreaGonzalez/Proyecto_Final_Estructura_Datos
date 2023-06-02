@@ -10,6 +10,7 @@ import co.edu.uniquindio.storify.Main;
 import co.edu.uniquindio.storify.dto.TableMusicaDto;
 import co.edu.uniquindio.storify.models.Cancion;
 import co.edu.uniquindio.storify.models.Persona;
+import co.edu.uniquindio.storify.models.Tienda;
 import co.edu.uniquindio.storify.models.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class HomeUserController {
 	Main aplication;
+	Tienda tienda = new Tienda();
 	
 	Usuario usuarioLogueado;
 	CrudRegistroViewcontroller crudRegistroViewcontroller;
@@ -66,6 +68,8 @@ public class HomeUserController {
     void onActionBuscar(ActionEvent event) {
     	System.out.println("Buscando...");    	
     	String busqueda = txtNombreArtista.getText();
+    	this.listacancionesEncontradas = new ArrayList<>();
+    	this.tablaListaMusica.getItems().clear();
     	List<TableMusicaDto> listacancionesEncontradas = crudRegistroViewcontroller.buscarCancionUsuario(busqueda);
     	this.listacancionesEncontradas.addAll(listacancionesEncontradas);  
     	llenarTablaMusica();    	
@@ -134,14 +138,14 @@ public class HomeUserController {
 				cancionesFavoritasUsuario = usuariosFavoritas.get(i).get(usuarioLogueado.getUsuario()).getListaCancionesFavoritas().getListaCancion();
 				for(int j =0; j <cancionesFavoritasUsuario.size(); j++) {
 					TableMusicaDto tableMusicaDto = new TableMusicaDto();
-					tableMusicaDto.setCodigoCancion("" + cancionesFavoritasUsuario.get(i).getCodigo());
-					tableMusicaDto.setNombreCancion (cancionesFavoritasUsuario.get(i).getNombre());
+					tableMusicaDto.setCodigoCancion("" + cancionesFavoritasUsuario.get(j).getCodigo());
+					tableMusicaDto.setNombreCancion (cancionesFavoritasUsuario.get(j).getNombre());
 					listacancionesFavoritasEncontradas.add(tableMusicaDto);
 				}
 				
 			}
 			usuarioAux = null;
-		}	
+		}
 	}
 
 	public Main getAplicacion() {
@@ -154,6 +158,7 @@ public class HomeUserController {
 		//llenarInformacionAnunciosTabla();	
 		iniciarTablaMusicaFavorita();
        	llenarTablaMusicaFavorita();
+       	tienda.conteoCancionesFavoritas();
 	}
 	
 	private void llenarTablaMusica() {

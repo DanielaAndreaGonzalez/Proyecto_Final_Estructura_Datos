@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+
 import co.edu.uniquindio.storify.dto.TableMusicaDto;
 import co.edu.uniquindio.storify.exceptions.RegistroException;
 import co.edu.uniquindio.storify.persistence.ArchivoUtil;
@@ -367,5 +370,45 @@ public class Tienda implements Serializable{
 	}
 
 		
+	
+	public void conteoCancionesFavoritas() {
+		
+		int conteoShakira =2;
+		int conteoFonseca =1;
+		ArrayList<Integer> conteos = new ArrayList<>();
+		
+		
+		
+		
+		
+		
+		
+		
+		for(int i=0; i<getListaUsers().size(); i++) {
+			for(int j=0; j< getListaUsers().get(i).get(i).getListaCancionesFavoritas().getListaCancion().size();j++)
+				  {
+					 System.out.println("Entró");
+					   if(getListaUsers().get(i).get(i).getListaCancionesFavoritas().getListaCancion().get(i).getCodigo()== 1 ||
+							   getListaUsers().get(i).get(i).getListaCancionesFavoritas().getListaCancion().get(i).getCodigo()==2)
+					   {
+						   conteoShakira++;
+						   System.out.println("Entró");
+						   
+					   }
+					   if(getListaUsers().get(i).get(i).getListaCancionesFavoritas().getListaCancion().get(i).getCodigo()==10)
+					   {
+						   conteoFonseca++;
+					   }
+				   	
+			}
+		}
+		conteos.add(conteoShakira);
+		conteos.add(conteoFonseca);
+		JOptionPane.showMessageDialog(null,"Canciones de Shakira"+ conteoShakira);
+		JOptionPane.showMessageDialog(null,"Canciones de Fonseca"+ conteoFonseca);	
+	}
+	
+	
+	
 		
 }
